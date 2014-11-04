@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ES_HEAP_SIZE=${ES_HEAP_SIZE:-4g}
+ES_HEAP_SIZE=${ES_HEAP_SIZE:-16g}
 LOGSTASH_ROOT=/opt/logstash
 
 echo "========================================================================"
