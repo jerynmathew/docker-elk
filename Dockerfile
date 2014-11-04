@@ -25,12 +25,20 @@ RUN cd /tmp && \
     rm ./logstash-1.4.2.tar.gz
 
 
+# Define mountable directories.
+VOLUME ["/data"]
+
+
 # Copy conf across
 ADD conf/elk.conf /etc/supervisor/conf.d/elk.conf
-ADD conf/elasticsearch.yml /opt/elasticsearch/config/elasticsearch.yml
-ADD conf/logstash.conf /opt/logstash/config/logstash.conf
+ADD conf/elasticsearch.yml /data/es/elasticsearch.yml
+ADD conf/logstash.conf /data/ls/logstash.conf
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
+
+
+# ENV
+ENV ES_HEAP_SIZE 4g
 
 
 # ES Plugins
@@ -39,11 +47,9 @@ RUN /opt/elasticsearch/bin/plugin -i elasticsearch/marvel/latest && \
     /opt/elasticsearch/bin/plugin -i royrusso/elasticsearch-HQ
 
 
-# Define mountable directories.
-VOLUME ["/opt/logstash/"]
+# Install contrib plugins
+RUN /opt/logstash/bin/plugin install contrib
 
-# Define working directory.
-WORKDIR /opt/logstash
 
 # Define default command.
 CMD ["/run.sh"]
@@ -52,6 +58,8 @@ CMD ["/run.sh"]
 #   - 9200: HTTP
 #   - 9300: transport
 #   - 9292: Kibana
+EXPOSE 3333/udp
+EXPOSE 3334
 EXPOSE 9200
 EXPOSE 9300
 EXPOSE 9292
