@@ -21,7 +21,7 @@ RUN cd /tmp && \
 RUN cd /tmp && \
     wget https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz && \
     tar -xvzf ./logstash-1.4.2.tar.gz && \
-    mv ./logstash-1.4.2.tar.gz /opt/logstash && \
+    mv ./logstash-1.4.2 /opt/logstash && \
     rm ./logstash-1.4.2.tar.gz
 
 
