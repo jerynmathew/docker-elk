@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ES_HEAP_SIZE=${ES_HEAP_SIZE:-16g}
-LOGSTASH_ROOT=/opt/logstash
 
 echo "========================================================================"
 echo "You can now connect to this Elasticsearch Server using:"
@@ -14,4 +13,5 @@ echo ""
 echo "    http://localhost:9292"
 echo ""
 echo "========================================================================"
-service supervisor restart
+service nginx restart
+supervisorctl stop all && service supervisor restart
