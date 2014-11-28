@@ -40,7 +40,7 @@ RUN chmod +x /*.sh
 
 
 # ENV
-ENV ES_HEAP_SIZE 4g
+ENV ES_HEAP_SIZE 16g
 
 
 # ES Plugins
