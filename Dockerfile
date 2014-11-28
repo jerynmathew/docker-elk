@@ -22,7 +22,11 @@ RUN cd /tmp && \
     wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz && \
     tar -xvzf ./kibana-3.1.2.tar.gz && \
     mv ./kibana-3.1.2 /opt/kibana && \
-    rm ./kibana-3.1.2.tar.gz
+    rm ./kibana-3.1.2.tar.gz &&
+    wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA2.tar.gz && \
+    tar -xvzf ./kibana-4.0.0-BETA2.tar.gz && \
+    mv ./kibana-4.0.0-BETA2 /opt/kibana4 && \
+    rm ./kibana-4.0.0-BETA2.tar.gz
 
 
 # Define mountable directories.
@@ -60,9 +64,10 @@ CMD ["/run.sh"]
 #   - 9200: HTTP
 #   - 9300: transport
 #   - 9292: Kibana
+#   - 9292: Kibana 4 (Beta 2)
 EXPOSE 3333/udp
 EXPOSE 3334
 EXPOSE 9200
 EXPOSE 9300
 EXPOSE 9292
-EXPOSE 9393
+EXPOSE 5601

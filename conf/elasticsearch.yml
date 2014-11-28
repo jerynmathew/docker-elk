@@ -230,6 +230,7 @@ plugin.mandatory: marvel,HQ,bigdesk
 # Disable HTTP completely:
 #
 #http.enabled: false
+http.cors.enabled: true
 
 
 ################################### Gateway ###################################
