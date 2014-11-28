@@ -22,7 +22,7 @@ RUN cd /tmp && \
     wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz && \
     tar -xvzf ./kibana-3.1.2.tar.gz && \
     mv ./kibana-3.1.2 /opt/kibana && \
-    rm ./kibana-3.1.2.tar.gz &&
+    rm ./kibana-3.1.2.tar.gz && \
     wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA2.tar.gz && \
     tar -xvzf ./kibana-4.0.0-BETA2.tar.gz && \
     mv ./kibana-4.0.0-BETA2 /opt/kibana4 && \
