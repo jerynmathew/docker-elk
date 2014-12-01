@@ -50,7 +50,7 @@ class Index(object):
             try:
                 resp = requests.delete(self._url)
                 if resp.ok and resp.json() and resp.json().get('acknowledged') is True:
-                    log.info("Index: [{}]  -> Resp: {}".format(self.name, resp.json()))
+                    log.info("Deleting Index: [{}]  -> Resp: {}".format(self.name, resp.json()))
                     self._deleted = True
 
                 else:
@@ -76,7 +76,7 @@ class Index(object):
                         'docs_count': resp.json().get('indices').get(self.name).get('total').get('docs').get('count'),
                         'docs_size': resp.json().get('indices').get(self.name).get('total').get('store').get('size_in_bytes')
                     }
-                    log.info("Index: [{}]. Docs: {}, Size: {}".format(self.name, intword(self._stats['docs_count']), 
+                    log.info("Index Stats: [{}]. Docs: {}, Size: {}".format(self.name, intword(self._stats['docs_count']), 
                                                                       naturalsize(self._stats['docs_size'])))
 
                 else:
@@ -126,31 +126,41 @@ def stats(start, end):
         click.echo("Start/End dates in Incorrect format! Please enter Dates in ISO-Format: YYYY-MM-DD")
 
 
-def main():
-    start = date(2014, 9, 30)
-    end = date(2014, 11, 4)
+@cli.command()
+@click.argument("start")
+@click.argument("end")
+def delete(start, end):
+    try:
+        start_date = arrow.get(start, "YYYY-MM-DD")
+        end_date = arrow.get(end, "YYYY-MM-DD")
+        cur_date = start_date
 
-    days = 0
-    found = 0
-    total_docs = 0
-    total_size = 0
-    while start != end:
-        index = Index(start)
+        days = 0
+        found = 0
+        total_docs = 0
+        total_size = 0
+        while cur_date.date() != end_date.date():
+            index = Index(cur_date.date())
 
-        if index.exists():
-            found += 1
-            result = index.show_stats()
-            total_docs += result['docs_count']
-            total_size += result['docs_size']
-            # index.delete()
+            if index.exists():
+                found += 1
+                result = index.show_stats()
+                total_docs += result['docs_count']
+                total_size += result['docs_size']
+                
+                index.delete()
 
-        days += 1
-        start = start + timedelta(days=1)
+            days += 1
+            cur_date = cur_date.replace(days=+1)
 
-    log.info("Started On {}. Ended on {}".format(date(2013, 10, 01).isoformat(), end.isoformat()))
-    log.info("Found {} Indices, in {} days".format(found, days))
-    log.info("Total Docs deleted: {}".format(intword(total_docs)))
-    log.info("Total Size freed: {}".format(naturalsize(total_size)))
+        click.echo("Details regarding Indices from [{}] -> [{}]".format(start_date.format("MMM DD, YYYY"), end_date.format("MMM DD, YYYY")))
+        click.echo("Found {} Indices, in {} days".format(found, days))
+        click.echo("Total Docs deleted: {}".format(intword(total_docs)))
+        click.echo("Total Size freed: {}".format(naturalsize(total_size)))
+
+    except arrow.parser.ParserError:
+        log.error("Exception while parsing Start/End dates")
+        click.echo("Start/End dates in Incorrect format! Please enter Dates in ISO-Format: YYYY-MM-DD")
 
 
 if __name__ == '__main__':
