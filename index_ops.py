@@ -15,13 +15,15 @@ log.addHandler(console)
 ES_INDEX_URL = "http://88.198.37.199:9200/{}?pretty"
 ES_INDEX_STATS_URL = "http://88.198.37.199:9200/{}/_stats"
 INDEX_NAME_PATTERN = "logstash-{}"
-
+MARVEL_NAME_PATTERN = ".marvel-{}"
 
 class Index(object):
     name = None
 
-    def __init__(self, date=None):
+    def __init__(self, date=None, marvel=False):
         self.name = INDEX_NAME_PATTERN.format(date.isoformat().replace("-", "."))
+        if marvel:
+            self.name = MARVEL_NAME_PATTERN.format(date.isoformat().replace("-", "."))
         self._date = date
         self._exists = None
         self._url = None
@@ -94,7 +96,8 @@ def cli():
 @cli.command()
 @click.argument("start")
 @click.argument("end")
-def stats(start, end):
+@click.option("--marvel", is_flag=True)
+def stats(start, end, marvel=False):
     try:
         start_date = arrow.get(start, "YYYY-MM-DD")
         end_date = arrow.get(end, "YYYY-MM-DD")
@@ -105,7 +108,7 @@ def stats(start, end):
         total_docs = 0
         total_size = 0
         while cur_date.date() != end_date.date():
-            index = Index(cur_date.date())
+            index = Index(cur_date.date(), marvel=marvel)
 
             if index.exists():
                 found += 1
@@ -129,7 +132,8 @@ def stats(start, end):
 @cli.command()
 @click.argument("start")
 @click.argument("end")
-def delete(start, end):
+@click.option("--marvel", is_flag=True)
+def delete(start, end, marvel=False):
     try:
         start_date = arrow.get(start, "YYYY-MM-DD")
         end_date = arrow.get(end, "YYYY-MM-DD")
@@ -140,7 +144,7 @@ def delete(start, end):
         total_docs = 0
         total_size = 0
         while cur_date.date() != end_date.date():
-            index = Index(cur_date.date())
+            index = Index(cur_date.date(), marvel=marvel)
 
             if index.exists():
                 found += 1
