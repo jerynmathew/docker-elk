@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 import arrow
 import click
 import requests
@@ -168,4 +170,9 @@ def delete(start, end, marvel=False):
 
 
 if __name__ == '__main__':
-    cli()
+    try:
+        cli()
+    except KeyboardInterrupt:
+        print "Quitting application..."
+
+
