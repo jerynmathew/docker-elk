@@ -29,7 +29,7 @@
 # Cluster name identifies your cluster for auto-discovery. If you're running
 # multiple clusters on the same network, make sure you're using unique names.
 #
-#cluster.name: elasticsearch
+cluster.name: logsearch
 
 
 #################################### Node #####################################
@@ -37,7 +37,7 @@
 # Node names are generated dynamically on startup, so you're relieved
 # from configuring them manually. You can tie this node to a specific name:
 #
-#node.name: "Franz Kafka"
+node.name: "logsearch-master"
 
 # Every node can be configured to allow or deny being eligible as the master,
 # and to allow or deny to store the data.
@@ -181,7 +181,7 @@ plugin.mandatory: marvel,HQ,bigdesk
 #
 # Set this property to true to lock the memory:
 #
-#bootstrap.mlockall: true
+bootstrap.mlockall: true
 
 # Make sure that the ES_MIN_MEM and ES_MAX_MEM environment variables are set
 # to the same value, and that the machine has enough memory to allocate
@@ -384,3 +384,34 @@ http.cors.enabled: true
 # it unless you need it is recommended (it is disabled by default).
 #
 #http.jsonp.enable: true
+
+## Threadpool Settings ##
+# Search pool
+threadpool.search.type: fixed
+threadpool.search.size: 20
+threadpool.search.queue_size: 100
+
+# Bulk pool
+threadpool.bulk.type: fixed
+threadpool.bulk.size: 60
+threadpool.bulk.queue_size: 300
+
+# Index pool
+threadpool.index.type: fixed
+threadpool.index.size: 20
+threadpool.index.queue_size: 100
+
+# Indices settings
+indices.memory.index_buffer_size: 30%
+indices.memory.min_shard_index_buffer_size: 12mb
+indices.memory.min_index_buffer_size: 96mb
+
+# Cache Sizes
+indices.fielddata.cache.size: 15%
+indices.fielddata.cache.expire: 6h
+indices.cache.filter.size: 15%
+indices.cache.filter.expire: 6h
+
+# Indexing Settings for Writes
+index.refresh_interval: 30s
+index.translog.flush_threshold_ops: 50000

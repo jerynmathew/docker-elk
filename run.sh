@@ -19,4 +19,4 @@ echo "    http://localhost:5601"
 echo ""
 echo "========================================================================"
 service nginx restart
-supervisorctl stop all && service supervisor restart
+supervisorctl stop all && supervisorctl start all
