@@ -38,6 +38,7 @@ ADD conf/elk.conf /etc/supervisor/conf.d/elk.conf
 ADD conf/elasticsearch.yml /data/es/elasticsearch.yml
 ADD conf/logstash.conf /data/ls/logstash.conf
 ADD conf/kibana-config.js /opt/kibana/config.js
+ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/kibana-nginx.conf /etc/nginx/conf.d/kibana.conf
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
