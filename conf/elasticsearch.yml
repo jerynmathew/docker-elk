@@ -142,7 +142,7 @@ node.name: "logsearch-master"
 
 # Path to directory containing configuration (this file and logging.yml):
 #
-path.conf: /data/config
+path.conf: /opt/elasticsearch/config
 
 # Path to directory where to store index data allocated for this node.
 #

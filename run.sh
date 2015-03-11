@@ -2,6 +2,8 @@
 
 # ES_HEAP_SIZE=${ES_HEAP_SIZE:-16g}
 
+rm -f /etc/nginx/sites-enabled/default
+
 echo "========================================================================"
 echo "You can now connect to this Elasticsearch Server using:"
 echo ""
@@ -19,4 +21,5 @@ echo "    http://localhost:82"
 echo ""
 echo "========================================================================"
 service nginx restart
-supervisorctl stop all && supervisorctl start all
+service supervisor restart
+# supervisorctl stop all && supervisorctl start all

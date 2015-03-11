@@ -35,7 +35,7 @@ VOLUME ["/data"]
 
 # Copy conf across
 ADD conf/elk.conf /etc/supervisor/conf.d/elk.conf
-ADD conf/elasticsearch.yml /data/es/elasticsearch.yml
+ADD conf/elasticsearch.yml /opt/elasticsearch/config/elasticsearch.yml
 ADD conf/logstash.conf /data/ls/logstash.conf
 ADD conf/kibana-config.js /opt/kibana/config.js
 ADD conf/kibana.yml /opt/kibana4/config/kibana.yml
