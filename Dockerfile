@@ -23,7 +23,7 @@ RUN cd /tmp && \
     tar -xvzf ./kibana-3.1.2.tar.gz && \
     mv ./kibana-3.1.2 /opt/kibana && \
     rm ./kibana-3.1.2.tar.gz && \
-    wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-BETA2.tar.gz && \
+    wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz && \
     tar -xvzf ./kibana-4.0.0-BETA2.tar.gz && \
     mv ./kibana-4.0.0-BETA2 /opt/kibana4 && \
     rm ./kibana-4.0.0-BETA2.tar.gz
@@ -45,12 +45,13 @@ RUN chmod +x /*.sh
 
 
 # ENV
-ENV ES_HEAP_SIZE 16g
-
+# ENV ES_HEAP_SIZE 16g
+ENV ES_MIN_MEM 18g
+ENV ES_MAX_MEM 18g
 
 # ES Plugins
-RUN /opt/elasticsearch/bin/plugin -i elasticsearch/marvel/latest && \
-    /opt/elasticsearch/bin/plugin -i lukas-vlcek/bigdesk/2.5.0 && \
+#RUN /opt/elasticsearch/bin/plugin -i elasticsearch/marvel/latest && \
+RUN /opt/elasticsearch/bin/plugin -i lukas-vlcek/bigdesk/2.5.0 && \
     /opt/elasticsearch/bin/plugin -i royrusso/elasticsearch-HQ
 
 
@@ -63,12 +64,14 @@ CMD ["/run.sh"]
 
 # Expose ports.
 #   - 9200: HTTP
+#   - 9201: HTTP Ngnix reverse proxy (Gzip stream for APIs)
 #   - 9300: transport
-#   - 9292: Kibana
-#   - 9292: Kibana 4 (Beta 2)
+#   - 80: Kibana
+#   - 82: Kibana 4 (Beta 2)
 EXPOSE 3333/udp
 EXPOSE 3334
 EXPOSE 9200
+EXPOSE 9201
 EXPOSE 9300
-EXPOSE 9292
-EXPOSE 5601
+EXPOSE 80
+EXPOSE 82

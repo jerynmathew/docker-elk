@@ -171,7 +171,7 @@ path.logs: /data/es/logs
 
 # If a plugin listed here is not installed for current node, the node will not start.
 #
-plugin.mandatory: marvel,HQ,bigdesk
+plugin.mandatory: HQ,bigdesk
 
 
 ################################### Memory ####################################
