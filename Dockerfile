@@ -11,10 +11,10 @@ RUN apt-get update && \
 
 # Elasticsearch, logstash, kibana
 RUN cd /tmp && \
-    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.tar.gz && \
-    tar -xvzf ./elasticsearch-1.4.0.tar.gz && \
-    mv ./elasticsearch-1.4.0 /opt/elasticsearch && \
-    rm ./elasticsearch-1.4.0.tar.gz && \
+    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz && \
+    tar -xvzf ./elasticsearch-1.4.4.tar.gz && \
+    mv ./elasticsearch-1.4.4 /opt/elasticsearch && \
+    rm ./elasticsearch-1.4.4.tar.gz && \
     wget https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz && \
     tar -xvzf ./logstash-1.4.2.tar.gz && \
     mv ./logstash-1.4.2 /opt/logstash && \
@@ -24,9 +24,9 @@ RUN cd /tmp && \
     mv ./kibana-3.1.2 /opt/kibana && \
     rm ./kibana-3.1.2.tar.gz && \
     wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz && \
-    tar -xvzf ./kibana-4.0.0-BETA2.tar.gz && \
-    mv ./kibana-4.0.0-BETA2 /opt/kibana4 && \
-    rm ./kibana-4.0.0-BETA2.tar.gz
+    tar -xvzf ./kibana-4.0.1-linux-x64.tar.gz && \
+    mv ./kibana-4.0.1-linux-x64 /opt/kibana4 && \
+    rm ./kibana-4.0.1-linux-x64.tar.gz
 
 
 # Define mountable directories.
@@ -38,8 +38,10 @@ ADD conf/elk.conf /etc/supervisor/conf.d/elk.conf
 ADD conf/elasticsearch.yml /data/es/elasticsearch.yml
 ADD conf/logstash.conf /data/ls/logstash.conf
 ADD conf/kibana-config.js /opt/kibana/config.js
+ADD conf/kibana.yml /opt/kibana4/config/kibana.yml
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/kibana-nginx.conf /etc/nginx/conf.d/kibana.conf
+ADD conf/es-nginx.conf /etc/nginx/conf.d/es.conf
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
 
