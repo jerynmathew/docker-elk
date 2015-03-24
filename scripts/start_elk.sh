@@ -1,5 +1,7 @@
 #! /bin/bash
 
+CONTAINER="elk"
+
 if [ ! -d "/opt/elk" ]; then
 	mkdir /opt/elk
 	mkdir -p /opt/elk/es /opt/elk/ls
@@ -12,16 +14,33 @@ if [ ! -d "/opt/elk" ]; then
 	echo "Cleaning up..."
 fi
 
-if [ $(docker inspect elk | python -c "import json, sys; res = json.loads(sys.stdin.read()); print 0 if len(res)>0 and res[0]['State']['Running'] else -1; ") -ne 0 ]; then
-	docker run -d -p 3333:3333/udp -p 3334:3334 -p 9200:9200 -p 9201:9201 -p 9300:9300 -p 80:80 -p 82:82 --name elk -v /opt/elk:/data jerynmathew/docker-elk
+RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
 
-	echo .
-	echo "ELK Docker started..."
-	echo .
-	echo "Kibana 3 running on :80"
-	echo "Kibana 4 running on :82"
-	echo "ES running on :9200"
-	echo "ES query running on :9201"
-	echo "Logstash (UDP) listening on :3333"
-	echo "Logstash listening on :3334"
+if [ $? -eq 1 ]; then
+  # Container does not exists. Create and run it.
+  docker run -d -p 3333:3333/udp -p 3334:3334 -p 9200:9200 -p 9201:9201 -p 9300:9300 -p 80:80 -p 82:82 --name elk -v /opt/elk:/data jerynmathew/docker-elk 2> /dev/null
 fi
+
+if [ $RUNNING == "false" ]; then
+	# Container create but not started
+	docker start elk 2> /dev/null
+fi
+
+STARTED=$(docker inspect --format="{{ .State.StartedAt }}" $CONTAINER)
+NETWORK=$(docker inspect --format="{{ .NetworkSettings.IPAddress }}" $CONTAINER)
+SERVICES=$(docker port $CONTAINER 2> /dev/null)
+
+echo ""
+echo "ELK Docker started..."
+echo ""
+echo "Started At: $STARTED"
+echo "IP Address: $NETWORK"
+echo "Services Running as:"
+echo $SERVICES
+echo ""
+echo "Kibana 3 running on :80"
+echo "Kibana 4 running on :82"
+echo "ES running on :9200"
+echo "ES query running on :9201"
+echo "Logstash (UDP) listening on :3333"
+echo "Logstash listening on :3334"
