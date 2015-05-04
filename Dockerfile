@@ -41,6 +41,7 @@ ADD conf/kibana-config.js /opt/kibana/config.js
 ADD conf/kibana.yml /opt/kibana4/config/kibana.yml
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/kibana-nginx.conf /etc/nginx/conf.d/kibana.conf
+ADD conf/log.htpasswd /etc/nginx/conf.d/log.htpasswd
 ADD conf/es-nginx.conf /etc/nginx/conf.d/es.conf
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
