@@ -14,8 +14,8 @@ console.setLevel(logging.DEBUG)
 log.addHandler(console)
 
 
-ES_INDEX_URL = "http://88.198.37.199:9200/{}?pretty"
-ES_INDEX_STATS_URL = "http://88.198.37.199:9200/{}/_stats"
+ES_INDEX_URL = "http://localhost:9200/{}?pretty"
+ES_INDEX_STATS_URL = "http://localhost:9200/{}/_stats"
 INDEX_NAME_PATTERN = "logstash-{}"
 MARVEL_NAME_PATTERN = ".marvel-{}"
 
